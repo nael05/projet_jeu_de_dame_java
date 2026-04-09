@@ -4,7 +4,7 @@ public class Jeu {
     private Plateau plateau;
     private List<String> historique = new ArrayList<>();
 
-    public Jeu() 
+    public Jeu() {
         plateau = new Plateau(new Joueur("Noir", "NOIR"), new Joueur("Blanc", "BLANC"));
     }
 
