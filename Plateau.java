@@ -20,13 +20,11 @@ public class Plateau {
                 cases[y][x] = new Case(x, y);
             }
         }
-        // 4 rangées de pions NOIRS (lignes 0 à 3)
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 10; x++) {
                 if ((x + y) % 2 != 0) cases[y][x].setPiece(new Pion("NOIR"));
             }
         }
-        // 4 rangées de pions BLANCS (lignes 6 à 9)
         for (int y = 6; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
                 if ((x + y) % 2 != 0) cases[y][x].setPiece(new Pion("BLANC"));
@@ -47,9 +45,7 @@ public class Plateau {
         boolean estUnSaut = validerSaut(p, x1, y1, x2, y2);
         boolean estUnMouvementSimple = validerMouvementSimple(p, x1, y1, x2, y2);
 
-        // Si un saut est en cours, on doit continuer avec la même pièce
         if (sautEnCours && (x1 != pieceEnSautX || y1 != pieceEnSautY)) return false;
-        // La prise est obligatoire
         if (sautObligatoire && !estUnSaut) return false;
 
         if (estUnMouvementSimple && !sautObligatoire && !sautEnCours) {
@@ -58,7 +54,6 @@ public class Plateau {
             changerJoueur();
             return true;
         } else if (estUnSaut) {
-            // Identifier et supprimer la pièce capturée
             int dx = Integer.signum(x2 - x1);
             int dy = Integer.signum(y2 - y1);
             int cx = x1 + dx;
@@ -74,7 +69,6 @@ public class Plateau {
             effectuerDeplacement(x1, y1, x2, y2);
             verifierPromotion(x2, y2);
 
-            // Vérifier si une autre prise est possible (Rafale)
             if (peutSauter(x2, y2)) {
                 sautEnCours = true;
                 pieceEnSautX = x2;
@@ -107,7 +101,6 @@ public class Plateau {
             }
             return true;
         } else {
-            // Pion : 1 case en avant seulement
             if (dist != 1) return false;
             return p.getCouleur().equals("NOIR") ? y2 == y1 + 1 : y2 == y1 - 1;
         }
@@ -132,7 +125,6 @@ public class Plateau {
             }
             return ennemis == 1;
         } else {
-            // Pion : Saut de 2 cases obligatoire, MAIS direction libre (avant ou arrière)
             if (dist != 2) return false;
             Piece capturee = getPieceAt(x1 + dx, y1 + dy);
             return capturee != null && !capturee.getCouleur().equals(p.getCouleur());
@@ -144,7 +136,6 @@ public class Plateau {
         if (p == null) return false;
         int[][] dirs = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
         for (int[] d : dirs) {
-            // Pour un pion, distance fixe de 2. Pour une dame, de 2 à 9.
             int maxDist = p.isDame() ? 10 : 3; 
             for (int dist = 2; dist < maxDist; dist++) {
                 if (validerSaut(p, x, y, x + d[0] * dist, y + d[1] * dist)) return true;
