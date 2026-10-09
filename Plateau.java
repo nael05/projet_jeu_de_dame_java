@@ -144,7 +144,7 @@ public class Plateau {
         return false;
     }
 
-    private boolean joueurDoitSauter() {
+    public boolean joueurDoitSauter() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
                 Piece p = getPieceAt(x, y);
